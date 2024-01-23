@@ -1,4 +1,4 @@
-//№1
+//#1
 
 async function calcSquare(num) {
     return new Promise((resolve) => {
@@ -16,7 +16,7 @@ calcSquare(10)
     console.log(err);
 })
 
-//№2
+//#2
 
 function sumValue(a, b) {
     return (a + b);
