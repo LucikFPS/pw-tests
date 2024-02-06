@@ -18,7 +18,6 @@ export class WotLoginPage {
   readonly langSelector: Locator;
   readonly loginError: Locator;
 
-
   constructor(page: Page) {
     this.page = page;
     this.emailInput = page.locator("xpath=//input[@placeholder='Email address']");
