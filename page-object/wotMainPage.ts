@@ -5,7 +5,6 @@ export class WotMainPage {
   readonly aboutTheGameButton: Locator;
   readonly downloadTheGameButton: Locator;
 
-
   constructor(page: Page) {
     this.page = page;
     this.aboutTheGameButton = page.locator("xpath=//a[@class='sub-button sub-button__huge promo-fullscreen_action js-promo-fullscreen-more']");
