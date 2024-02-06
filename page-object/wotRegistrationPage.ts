@@ -15,7 +15,6 @@ export class WotRegistrationPage {
   readonly googleRegSSO: Locator;
   readonly twitchRegSSO: Locator;
 
- 
   constructor(page: Page) {
     this.page = page;
     this.emailRegInput = page.locator("xpath=//input[@type='email']");
