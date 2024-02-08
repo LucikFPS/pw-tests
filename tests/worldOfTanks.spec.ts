@@ -3,6 +3,8 @@ import { WotMainPage } from '../page-object/wotMainPage';
 import { WotPremiumPage } from '../page-object/wotPremiumPage';
 import { WotLoginPage } from '../page-object/wotLoginPage';
 import { WotRegistrationPage } from '../page-object/wotRegistrationPage';
+import { WotWikiPage } from '../page-object/wotWikiPage';
+import exp from 'constants';
 
 
 test.describe('World of tanks tests', () => {
@@ -122,5 +124,43 @@ test.describe('World of tanks tests', () => {
         await expect(page.locator("xpath=//p[@id='id_password_error']")).toHaveText("Мінімальна довжина: 8 символів. Ваш пароль повинен містити малі та великі літери, а також цифри.");
         await wotRegistrationPage.repPassRegInput.pressSequentially("1234");
         await expect(page.locator("xpath=//p[@id='id_re_password_error']")).toHaveText("Введені паролі не сходяться.");
+    });
+
+    test('The user can to WoT wiki page and find a tank', async ({ page }) => {
+        const wotWikiPage = new WotWikiPage (page);
+        await wotWikiPage.goto();
+
+        //await wotWikiPage.acceptCookies.click(); for VPN. uncomment if needed
+        await page.waitForLoadState();
+        await wotWikiPage.searchInput.pressSequentially("T77");
+        await wotWikiPage.searchButton.click();
+        await page.locator("xpath=//a[@href='//wiki.wargaming.net/ru/Tank:A132_T77']").click();
+        await expect(page.locator("xpath=//span[@dir='auto' and text()='T77']")).toHaveText("T77");
+    });
+
+    test('The user can switch between different games in the left tab', async ({ page }) => {
+        const wotWikiPage = new WotWikiPage (page);
+        await wotWikiPage.goto();
+
+        await wotWikiPage.wowarpTab.click();
+        await expect(page).toHaveURL("https://wiki.wargaming.net/en/World_of_Warplanes");
+        await wotWikiPage.wowwarsTab.click();
+        await expect(page).toHaveURL("https://wiki.wargaming.net/en/World_of_Warships");
+        await wotWikiPage.wotBlitzTab.click();
+        await expect(page).toHaveURL("https://wiki.wargaming.net/en/WoT_Blitz");
+        await wotWikiPage.wotConsoleTab.click();
+        await expect(page).toHaveURL("https://wiki.wargaming.net/en/WoT_Console");
+        await wotWikiPage.wotTab.click();
+        await expect(page).toHaveURL("https://wiki.wargaming.net/en/World_of_Tanks");
+    });
+
+    test('The user can go to discussion page and go to any contest', async ({ page }) => {
+        const wotWikiPage = new WotWikiPage (page);
+        await wotWikiPage.goto();
+
+        await wotWikiPage.wotDiscussions.click();
+        await expect(page).toHaveTitle("Talk:World of Tanks - Global wiki. Wargaming.net");
+        await page.locator("xpath=//span[@class='toctext' and text()='T28 Proto.']").click();
+        await expect(page.locator("xpath=//span[@id='T28_Proto.']")).toBeInViewport();
     });
 })
